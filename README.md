@@ -1,6 +1,5 @@
 # VOI-node-testnet
 
-Cài đặt nhanh: 
 1. Run the following commands to download some requirements and add the algorand repository, from which you will be getting your node software and its updates
 ```Bash
 sudo apt install -y jq bc gnupg2 curl software-properties-common
@@ -11,7 +10,7 @@ curl -o - https://releases.algorand.com/key.pub | sudo tee /etc/apt/trusted.gpg.
 ```Bash
 sudo add-apt-repository "deb [arch=amd64] https://releases.algorand.com/deb/ stable main"
 ```
-2.Run this command to install the node
+2. Run this command to install the node
 ```Bash
 sudo apt update && sudo apt install -y algorand && echo OK
 ```
@@ -19,11 +18,11 @@ sudo apt update && sudo apt install -y algorand && echo OK
 ```Bash
 sudo systemctl stop algorand && sudo systemctl disable algorand && echo OK
 ```
-5. Set up your shell to run goal
+4. Set up your shell to run goal
 ```Bash
 echo -e "\nexport ALGORAND_DATA=/var/lib/algorand/" >> ~/.bashrc && source ~/.bashrc && echo OK
 ```
-7. Configure your node for voi
+5. Configure your node for voi
 ```Bash
 sudo algocfg set -p DNSBootstrapID -v "<network>.voi.network" -d /var/lib/algorand/ &&\
 sudo algocfg set -p EnableCatchupFromArchiveServers -v true -d /var/lib/algorand/ &&\
@@ -31,39 +30,50 @@ sudo chown algorand:algorand /var/lib/algorand/config.json &&\
 sudo chmod g+w /var/lib/algorand/config.json &&\
 echo OK
 ```
-9. Run this command to fetch the genesis file:
+6. Run this command to fetch the genesis file:
 ```Bash
 sudo curl -s -o /var/lib/algorand/genesis.json https://testnet-api.voi.nodly.io/genesis &&\
 sudo chown algorand:algorand /var/lib/algorand/genesis.json &&\
 echo OK
 ```
-11. Rename the algorand service to voi:
+7. Rename the algorand service to voi:
 ```Bash
 sudo cp /lib/systemd/system/algorand.service /etc/systemd/system/voi.service &&\
 sudo sed -i 's/Algorand daemon/Voi daemon/g' /etc/systemd/system/voi.service &&\
 echo OK
 ```
-13. Start your node VOI
+8. Start your node VOI
 ```Bash
 sudo systemctl start voi && sudo systemctl enable voi && echo OK
 ```
-15. Status
+9. Status
 ```Bash
 goal node status
 ```
-17. Fast catch up with the network
+10. Fast catch up with the network
+```Bash
 goal node catchup $(curl -s https://testnet-api.voi.nodly.io/v2/status|jq -r '.["last-catchpoint"]') &&\
 echo OK
-18. Wait for fast catchup to complete: sau khi không còn thấy catchpoint thì ctrl + c
+```
+12. Wait for fast catchup to complete: sau khi không còn thấy catchpoint thì ctrl + c
+```Bash
 goal node status -w 1000
-19. Enable Telemetry
+```
+13. Enable Telemetry
+```Bash
 sudo ALGORAND_DATA=/var/lib/algorand diagcfg telemetry name -n buiminhphat   <<<<YOUR-NAME>
 sudo ALGORAND_DATA=/var/lib/algorand diagcfg telemetry enable &&\
 sudo systemctl restart voi
-20. Create a node wallet container
+```
+14. Create a node wallet container
+```Bash
 goal wallet new voi
-21. To create a new account
+```
+15. To create a new account
+```Bash
 goal account new
+```
+
 22. display your new account’s mnemonic, use this command:
 echo -ne "\nEnter your voi address: " && read addr &&\
 goal account export -a $addr
