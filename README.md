@@ -70,11 +70,11 @@ sudo ALGORAND_DATA=/var/lib/algorand diagcfg telemetry name -n <your-name>
 sudo ALGORAND_DATA=/var/lib/algorand diagcfg telemetry enable &&\
 sudo systemctl restart voi
 ```
-14. Create a node wallet container
+### 13. Create a node wallet container
 ```Bash
 goal wallet new voi
 ```
-15. To create a new account
+### 14. To create a new account
 ```Bash
 goal account new
 ```
@@ -83,12 +83,12 @@ goal account new
 goal account import
 ```
 - Type your recovery mnemonic below:
-16. display your new account’s mnemonic, use this command:
+### 15. display your new account’s mnemonic, use this command:
 ```Bash
 echo -ne "\nEnter your voi address: " && read addr &&\
 goal account export -a $addr
 ```
-17. Generate your participation keys : nhập 8000000
+### 16. Generate your participation keys: Type 8000000
 ```Bash
 getaddress() {
   if [ "$addr" == "" ]; then echo -ne "\nNote: Completing this will remember your address until you log out. "; else echo -ne "\nNote: Using previously entered address. "; fi; echo -e "To forget the address, press Ctrl+C and enter the command:\n\tunset addr\n";
@@ -106,7 +106,7 @@ end=$((start + duration)) &&\
 dilution=$(echo "sqrt($end - $start)" | bc) &&\
 goal account addpartkey -a $addr --roundFirstValid $start --roundLastValid $end --keyDilution $dilution
 ```
-18. Check your participation status
+### 17. Check your participation status:
 ```Bash
 getaddress() {
   if [ "$addr" == "" ]; then echo -ne "\nNote: Completing this will remember your address until you log out. "; else echo -ne "\nNote: Using previously entered address. "; fi; echo -e "To forget the address, press Ctrl+C and enter the command:\n\tunset addr\n";
@@ -119,8 +119,7 @@ getaddress() {
 getaddress &&\
 goal account dump -a $addr | jq -r 'if (.onl == 1) then "You are online!" else "You are offline." end'
 ```
-
-19.You can register your account as participating: trước khi đăng ký vào discord VOI (mục -node-runner-help để faucet 1 VOI với câu lệnh: /voi-testnet-faucet <địa chỉ ví>
+### 18.You can register your account as participating: trước khi đăng ký vào discord VOI (mục -node-runner-help để faucet 1 VOI với câu lệnh: /voi-testnet-faucet <địa chỉ ví>
 getaddress() {
   if [ "$addr" == "" ]; then echo -ne "\nNote: Completing this will remember your address until you log out. "; else echo -ne "\nNote: Using previously entered address. "; fi; echo -e "To forget the address, press Ctrl+C and enter the command:\n\tunset addr\n";
   count=0; while ! (echo "$addr" | grep -E "^[A-Z2-7]{58}$" > /dev/null); do
